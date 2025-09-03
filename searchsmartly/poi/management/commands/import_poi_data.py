@@ -1,4 +1,5 @@
 import csv
+import json
 from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand
 from poi.models import PoI
@@ -35,5 +36,22 @@ class Command(BaseCommand):
                             float(row['poi_latitude'])
                         ),
                         'ratings': row['poi_ratings'].split(',')
+                    }
+                )
+                
+    def import_json(self, file_path):
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+            for poi_data in data:
+                PoI.objects.update_or_create(
+                    external_id=poi_data['id'],
+                    defaults={
+                        'name': poi_data['name'],
+                        'category': poi_data['category'],
+                        'coordinates': Point(
+                            poi_data['coordinates'][1],
+                            poi_data['coordinates'][0]
+                        ),
+                        'ratings': poi_data['ratings']
                     }
                 )
