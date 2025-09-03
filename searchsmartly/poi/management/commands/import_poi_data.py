@@ -62,7 +62,7 @@ class Command(BaseCommand):
     def import_xml(self, file_path):
         tree = ET.parse(file_path)
         root = tree.getroot()
-        for poi_element in root.findall('poi'):
+        for poi_element in root.findall('DATA_RECORD'):
             ratings = poi_element.find('pratings').text.split(',')
             ratings = [int(rating.strip()) for rating in ratings]
             PoI.objects.update_or_create(
