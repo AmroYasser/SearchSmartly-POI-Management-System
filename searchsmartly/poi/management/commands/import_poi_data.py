@@ -1,4 +1,8 @@
+import csv
+from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand
+from poi.models import PoI
+
 
 class Command(BaseCommand):
     help = 'Import PoI data from CSV, JSON, or XML files'
@@ -16,3 +20,20 @@ class Command(BaseCommand):
                 self.import_xml(file_path)
             else:
                 self.stdout.write(self.style.ERROR(f'Unsupported file format: {file_path}'))
+                
+    def import_csv(self, file_path):
+        with open(file_path, 'r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            for row in reader:
+                PoI.objects.update_or_create(
+                    external_id=row['poi_id'],
+                    defaults={
+                        'name': row['poi_name'],
+                        'category': row['poi_category'],
+                        'coordinates': Point(
+                            float(row['poi_longitude']),
+                            float(row['poi_latitude'])
+                        ),
+                        'ratings': row['poi_ratings'].split(',')
+                    }
+                )
