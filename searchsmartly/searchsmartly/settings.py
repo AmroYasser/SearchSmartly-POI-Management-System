@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     
     # geodjango
     'django.contrib.gis',
+    
+    # apps
+    'poi',
 ]
 
 MIDDLEWARE = [
