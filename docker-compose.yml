@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgis/postgis:13-3.1
+    image: postgis/postgis
     environment:
       - POSTGRES_DB=searchsmartly
       - POSTGRES_USER=searchsmartly
