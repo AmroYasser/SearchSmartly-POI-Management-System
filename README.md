@@ -22,7 +22,7 @@ This is a Django-based Point of Interest (POI) management system that allows you
 
 1. Clone the repository:
 ```bash
-git clone link/to/the/repo
+git clone https://github.com/AmroYasser/SearchSmartly-POI-Management-System.git
 ```
 
 2. Make sure you are in the project root directory.
