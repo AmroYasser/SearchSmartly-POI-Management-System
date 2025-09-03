@@ -27,7 +27,7 @@ class Command(BaseCommand):
         with open(file_path, 'r') as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                ratings = row[5].strip('{}').split(',')
+                ratings = row['poi_ratings'].strip('{}').split(',')
                 ratings = [int(float(rating.strip())) for rating in ratings]
                 PoI.objects.update_or_create(
                     external_id=row['poi_id'],
