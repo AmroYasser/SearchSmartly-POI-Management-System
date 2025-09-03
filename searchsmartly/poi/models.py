@@ -12,4 +12,4 @@ class PoI(models.Model):
         return self.name
     
     class Meta:
-        verbose_name_plural = 'Points of intrest'
+        verbose_name_plural = 'Points of interest'
