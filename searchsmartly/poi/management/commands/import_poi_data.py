@@ -3,6 +3,7 @@ import json
 from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand
 from poi.models import PoI
+import xml.etree.ElementTree as ET
 
 
 class Command(BaseCommand):
@@ -55,3 +56,20 @@ class Command(BaseCommand):
                         'ratings': poi_data['ratings']
                     }
                 )
+                
+    def import_xml(self, file_path):
+        tree = ET.parse(file_path)
+        root = tree.getroot()
+        for poi_element in root.findall('poi'):
+            PoI.objects.update_or_create(
+                external_id=poi_element.find('pid').text,
+                defaults={
+                    'name': poi_element.find('pname').text,
+                    'category': poi_element.find('pcategory').text,
+                    'coordinates': Point(
+                        float(poi_element.find('plongitude').text),
+                        float(poi_element.find('platitude').text)
+                    ),
+                    'ratings': poi_element.find('pratings').text.split(',')
+                }
+            )
