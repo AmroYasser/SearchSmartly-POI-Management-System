@@ -27,6 +27,8 @@ class Command(BaseCommand):
         with open(file_path, 'r') as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
+                ratings = row[5].strip('{}').split(',')
+                ratings = [int(float(rating.strip())) for rating in ratings]
                 PoI.objects.update_or_create(
                     external_id=row['poi_id'],
                     defaults={
@@ -36,7 +38,7 @@ class Command(BaseCommand):
                             float(row['poi_longitude']),
                             float(row['poi_latitude'])
                         ),
-                        'ratings': row['poi_ratings'].split(',')
+                        'ratings': ratings
                     }
                 )
                 
@@ -53,7 +55,7 @@ class Command(BaseCommand):
                             poi_data['coordinates'][1],
                             poi_data['coordinates'][0]
                         ),
-                        'ratings': poi_data['ratings']
+                        'ratings': [int(rating) for rating in poi_data['ratings']]
                     }
                 )
                 
@@ -61,6 +63,8 @@ class Command(BaseCommand):
         tree = ET.parse(file_path)
         root = tree.getroot()
         for poi_element in root.findall('poi'):
+            ratings = poi_element.find('pratings').text.split(',')
+            ratings = [int(rating.strip()) for rating in ratings]
             PoI.objects.update_or_create(
                 external_id=poi_element.find('pid').text,
                 defaults={
@@ -70,6 +74,6 @@ class Command(BaseCommand):
                         float(poi_element.find('plongitude').text),
                         float(poi_element.find('platitude').text)
                     ),
-                    'ratings': poi_element.find('pratings').text.split(',')
+                    'ratings': ratings
                 }
             )

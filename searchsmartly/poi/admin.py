@@ -9,4 +9,7 @@ class PoIAdmin(GISModelAdmin):
     list_filter = ('category',)
 
     def avg_rating(self, obj):
-        return sum(obj.ratings) / len(obj.ratings)
+        ratings = obj.ratings
+        if ratings:
+            return round(sum(ratings) / len(ratings), 2)
+        return 0
