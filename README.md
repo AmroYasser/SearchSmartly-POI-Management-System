@@ -34,7 +34,7 @@ docker-compose up -d --build
 
 4. Run the database migrations:
 ```bash
-docker-compose run web python searchsmartly/manage.py makemigration
+docker-compose run web python searchsmartly/manage.py makemigrations
 
 docker-compose run web python searchsmartly/manage.py migrate
 ```
