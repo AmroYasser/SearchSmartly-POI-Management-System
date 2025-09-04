@@ -52,8 +52,8 @@ class Command(BaseCommand):
                         'name': poi_data['name'],
                         'category': poi_data['category'],
                         'coordinates': Point(
-                            poi_data['coordinates'][1],
-                            poi_data['coordinates'][0]
+                            poi_data['coordinates']['longitude'],
+                            poi_data['coordinates']['latitude']
                         ),
                         'ratings': [int(rating) for rating in poi_data['ratings']]
                     }
